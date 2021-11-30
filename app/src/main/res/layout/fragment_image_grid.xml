@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.ImageGridFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/myRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listPictures"
@@ -18,4 +22,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.chefdetail.tabs.AlbumChefFragment"
         tools:listitem="@layout/fragment_image_grid" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

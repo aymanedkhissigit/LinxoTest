@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainFragment">
 
-
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myRecycler"
             android:layout_width="match_parent"
@@ -26,5 +29,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myRecycler" />
 
-
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

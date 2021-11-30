@@ -45,33 +45,6 @@ class LinxoViewModel @Inject constructor (val linxoRepository: LinxoRepository) 
 
     }
 
-    /*fun getAlbums() : LiveData<Album> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    val response = linxoRepository.getAlbums()
-
-                    if (response.isSuccessful) {
-                        albums.postValue(response.body())
-                    }
-                }
-            return albums
-    }
-
-
-
-    fun getUsers() : LiveData<Users> {
-
-         viewModelScope.launch(Dispatchers.IO) {
-            val response = linxoRepository.getUsers()
-
-                if (response.isSuccessful) {
-                    users.postValue(response.body())
-                }
-        }
-
-        return users
-
-    }*/
-
 
 }
 

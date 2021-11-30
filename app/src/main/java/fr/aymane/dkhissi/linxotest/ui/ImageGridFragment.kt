@@ -1,11 +1,16 @@
 package fr.aymane.dkhissi.linxotest.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -17,6 +22,7 @@ import fr.aymane.dkhissi.linxotest.adapters.GridAdapter
 import fr.aymane.dkhissi.linxotest.databinding.FragmentImageGridBinding
 import fr.aymane.dkhissi.linxotest.viewModels.LinxoViewModel
 import kotlinx.android.synthetic.main.fragment_image_grid.view.*
+import kotlinx.android.synthetic.main.fragment_main.*
 
 @AndroidEntryPoint
 class ImageGridFragment : Fragment() {
@@ -44,16 +50,43 @@ class ImageGridFragment : Fragment() {
             adapter = gridAdapter
 
         }
-        linxoViewModel.getPhotos().observe(viewLifecycleOwner, Observer {
-            Log.d("photos",it.toString())
-            for (i in 0 .. it.size-1){
-                if (args.albumId==it[i].albumId){
-                    listUrls.add(it[i].thumbnailUrl)
-                }
-            }
-            gridAdapter.submitList(listUrls)
+        if (checkForInternet(context!!)){
+            linxoViewModel.getPhotos().observe(viewLifecycleOwner, Observer {
 
-        })
+                listUrls.clear()
+                for (i in 0 .. it.size-1){
+                    if (args.albumId==it[i].albumId){
+                        listUrls.add(it[i].thumbnailUrl)
+                    }
+                }
+                gridAdapter.submitList(listUrls)
+                binding.myRefresh.isRefreshing=false
+
+            })
+        }else{
+            Toast.makeText(context,"Check your connection and Refresh", Toast.LENGTH_SHORT).show()
+            swipeRefresh.isRefreshing=false
+        }
+        binding.myRefresh.setOnRefreshListener {
+            if (checkForInternet(context!!)){
+                linxoViewModel.getPhotos().observe(viewLifecycleOwner, Observer {
+                    listUrls.clear()
+                    for (i in 0 .. it.size-1){
+                        if (args.albumId==it[i].albumId){
+                            listUrls.add(it[i].thumbnailUrl)
+                        }
+                    }
+                    gridAdapter.submitList(listUrls)
+                    binding.myRefresh.isRefreshing=false
+
+                })
+            }else{
+                Toast.makeText(context,"Check your connection and Refresh", Toast.LENGTH_SHORT).show()
+                binding.myRefresh.isRefreshing=false
+            }
+        }
+
+
 
 
     }
@@ -69,6 +102,35 @@ class ImageGridFragment : Fragment() {
         return binding.root
     }
 
+    private fun checkForInternet(context: Context): Boolean {
 
+
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
+            val network = connectivityManager.activeNetwork ?: return false
+
+
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            // if the android version is below M
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
+        }
+    }
 
 }

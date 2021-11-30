@@ -18,12 +18,8 @@ class LinxoRepository @Inject constructor (val linxoWebservice: LinxoWebservice)
 
 
 
-    suspend fun getAlbums(): Response<Albums> {
-
-
-
+    suspend fun getAlbums(): Response<Albums>{
         return linxoWebservice.getAlbums()
-
     }
 
     suspend fun getUsers(): Response<Users> {

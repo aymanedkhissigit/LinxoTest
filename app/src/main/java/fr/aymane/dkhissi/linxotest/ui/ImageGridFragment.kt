@@ -24,8 +24,8 @@ class ImageGridFragment : Fragment() {
     private lateinit var binding: FragmentImageGridBinding
 
      var listUrls = ArrayList<String>()
-    lateinit var gridAdapter: GridAdapter
-    
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,10 +51,6 @@ class ImageGridFragment : Fragment() {
                     listUrls.add(it[i].thumbnailUrl)
                 }
             }
-
-            Log.d("urls",listUrls.toString())
-            Log.d("urls",listUrls.size.toString())
-            //setupRecyclerView(binding.root)
             gridAdapter.submitList(listUrls)
 
         })

@@ -37,10 +37,7 @@ class ImageGridFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val linxoViewModel : LinxoViewModel by viewModels ()
-
         val args: ImageGridFragmentArgs by navArgs()
-
-
 
 
         val gridAdapter =  GridAdapter(listUrls)
@@ -48,8 +45,9 @@ class ImageGridFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = gridAdapter
-
         }
+
+
         if (checkForInternet(context!!)){
             linxoViewModel.getPhotos().observe(viewLifecycleOwner, Observer {
 
